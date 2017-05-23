@@ -121,12 +121,6 @@ Below you can see an example of the local area search calculated (in gray) for t
 
 ![alt text][image4]
 
-#### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
-
-Ultimately I searched on two scales using YUV 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided an acceptable result.  Here are some example images (snapshots extracted from the output video sequence).
-
-###IMAGE
-![alt text][image4]
 ---
 
 ### Video Implementation
