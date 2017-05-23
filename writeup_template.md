@@ -17,7 +17,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 [image1]: ./examples/fig1_car_nocar.png
-[image2]: ./examples/fig2_hog_sample.jpg
+[image2]: ./examples/fig2_hog_sample.png
 [image3.1]: ./examples/fig3_1_sliding_far.jpg
 [image3.2]: ./examples/fig3_2_sliding_mid.jpg
 [image3.3]: ./examples/fig3_3_sliding_close.jpg
@@ -99,13 +99,27 @@ We need to mention however that this approach has its drawbacks too. If full sca
 So, to summarize, my project implements two types of scan:
 
 **Full Scans**: full scans divides the region of interest in 3 areas, depending on the relative size of the vehicles vs. distance. Those areas overlap as it can be seen in the following images. The three areas have defined by the parameters shown in the notebook, under section "Design a multi-scale Window Set".
-Below you can see the three sliding window areas presented separately.
+Below you can see the three sliding window areas presented separately. Overlapping value in the x and y direction is 0.75 in all cases.
 
-**Local Scans** : for every detected vehicle (or labelled object) in the previous frame, a local area is defined. It’s not possible to define a exact size that this area should have because the area of the labelled objects is not very reliable, but basically I have defined such area based on the height of the label, that is more stable than the width. Local areas can also overlap between different vehicles. The local scan sliding window set is constructed dinamically for each frame in the method `get_local_search_windows` of section "Dynamic Sliding Window Set (Local Scan)"
-Below you can see an example of the local are search calculated based on the labelled objected area.
+"Far" set, with window size of 64x64 pixels:
 
-###IMAGE
-![alt text][image3]
+![alt text][image3.1]
+
+"Middle" set, with window size of 128x128 pixels:
+
+![alt text][image3.2]
+
+"Close" set, with window size of 192x192 pixels:
+
+![alt text][image3.3]
+
+**Local Scans** : for every detected vehicle (or labelled object) in the previous frame, a local area is defined. It’s not possible to define a exact size that this area should have because the area of the labelled objects is not very reliable, but basically I have defined such area based on the height of the label, that is more stable than the width. Local areas can also overlap between different vehicles.
+
+The local scan sliding window set is constructed dinamically for each frame in the method `get_local_search_windows` of section "Dynamic Sliding Window Set (Local Scan)"
+
+Below you can see an example of the local area search calculated (in gray) for the next frame, based on the labelled objects areas of the current frame (blue):
+
+![alt text][image4]
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
@@ -118,7 +132,8 @@ Ultimately I searched on two scales using YUV 3-channel HOG features plus spatia
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+
+Here's a [link to my video result](./project_video_out.mp4)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
@@ -131,16 +146,16 @@ This is implemented in the class `Vehicle` in the Video Pipeline section, and th
 The heatmaps are thresholded to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.
 Note that, as explained earlier, these blobs are the basis to designate a local area search in the following frames.
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
 ### Pipeline Frame Samples:
+
 Below I present 6 sample frames showing the main 3 steps of the pipeline.
 The first column shows the heatmaps constructed as a sum of the windows were a car (or car piece) was detected.
 The second column shows the blobs of detected items, based on the output of `scipy.ndimage.measurements.label()`.
 The third column presents the final result of drawed boxes around the detected blobs (vehicles)
 
-![alt text][image7]
-###IMAGE
+![alt text][image5]
+
 ---
 
 ### Discussion
